@@ -89,7 +89,7 @@ class WechatMiniProgram extends Common
              */
             //返回状态：不成功，抛出异常
             if ($getResult['errcode'] != 0) {
-                throw new Exception($getResult['errmsg'], $getResult['errcode']);
+                throw new WechatMiniProgramException($getResult['errmsg'], $getResult['errcode']);
             }
             //在redis中保存access_token
             $redis->set($access_token_key, $getResult['access_token'], $getResult['expires_in']);
@@ -126,7 +126,7 @@ class WechatMiniProgram extends Common
          */
         //返回状态：不成功，抛出异常
         if ($getResult['errcode'] != 0) {
-            throw new Exception($getResult['errmsg'], $getResult['errcode']);
+            throw new WechatMiniProgramException($getResult['errmsg'], $getResult['errcode']);
         }
         return true;
     }
@@ -158,7 +158,7 @@ class WechatMiniProgram extends Common
          */
         //返回状态：不成功，抛出异常
         if ($getResult['errcode'] != 0) {
-            throw new Exception($getResult['errmsg'], $getResult['errcode']);
+            throw new WechatMiniProgramException($getResult['errmsg'], $getResult['errcode']);
         }
         return [
             'open_id' => $getResult['openid'],
@@ -200,7 +200,7 @@ class WechatMiniProgram extends Common
         );
         //返回状态：不成功，抛出异常
         if ($postResult['errcode'] != 0) {
-            throw new Exception($postResult['errmsg'], $postResult['errcode']);
+            throw new WechatMiniProgramException($postResult['errmsg'], $postResult['errcode']);
         }
         return true;
     }
@@ -239,7 +239,7 @@ class WechatMiniProgram extends Common
         );
         //返回状态：不成功，抛出异常
         if ($postResult['errcode'] != 0) {
-            throw new Exception($postResult['errmsg'], $postResult['errcode']);
+            throw new WechatMiniProgramException($postResult['errmsg'], $postResult['errcode']);
         }
         switch ($postResult['contentType']) {
             case 'image/jpeg':
@@ -294,7 +294,7 @@ class WechatMiniProgram extends Common
                  */
                 $real_file_path = $this->options['app_qrcode_cache_real_dir_path'] . DIRECTORY_SEPARATOR . $filename;
                 if (file_put_contents($real_file_path, $postResult['buffer']) === false) {
-                    throw new Exception('文件：' . $real_file_path . '写入失败');
+                    throw new WechatMiniProgramException('文件：' . $real_file_path . '写入失败');
                 }
                 break;
         }

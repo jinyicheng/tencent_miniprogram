@@ -76,7 +76,7 @@ class QQMiniProgram extends Common
              */
             //返回状态：不成功，抛出异常
             if ($getResult['errcode'] != 0) {
-                throw new Exception($getResult['errmsg'], $getResult['errcode']);
+                throw new QQMiniProgramException($getResult['errmsg'], $getResult['errcode']);
             }
             //在redis中保存access_token
             $redis->set($access_token_key, $getResult['access_token'], $getResult['expires_in']);
@@ -110,7 +110,7 @@ class QQMiniProgram extends Common
          */
         //返回状态：不成功，抛出异常
         if ($getResult['errcode'] != 0) {
-            throw new Exception($getResult['errmsg'], $getResult['errcode']);
+            throw new QQMiniProgramException($getResult['errmsg'], $getResult['errcode']);
         }
         return [
             'open_id' => $getResult['openid'],
@@ -155,7 +155,7 @@ class QQMiniProgram extends Common
         );
         //返回状态：不成功，抛出异常
         if ($postResult['errcode'] != 0) {
-            throw new Exception($postResult['errmsg'], $postResult['errcode']);
+            throw new QQMiniProgramException($postResult['errmsg'], $postResult['errcode']);
         }
         return true;
     }
