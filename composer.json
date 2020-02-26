@@ -19,7 +19,7 @@
     "php": ">=7.1.0",
     "ext-redis": "*",
     "aliyuncs/oss-sdk-php": "^2.3",
-    "jinyicheng/redis": "^1.0",
+    "jinyicheng/redis": ">=1.0",
     "ext-curl": "*",
     "ext-json": "*"
   },
