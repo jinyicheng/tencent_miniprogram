@@ -2,7 +2,6 @@
 
 namespace jinyicheng\tencent_miniprogram\wechat_mini_program;
 
-use BadFunctionCallException;
 use InvalidArgumentException;
 use jinyicheng\tencent_miniprogram\MiniProgramException;
 use jinyicheng\tencent_miniprogram\Request;
@@ -15,49 +14,7 @@ use jinyicheng\tencent_miniprogram\Response;
  */
 class SubscribeMessage
 {
-    private $options;
-    private static $instance = [];
-
-    /**
-     * SubscribeMessage constructor.
-     * @param array $options
-     */
-    private function __construct($options = [])
-    {
-        $this->options = $options;
-        if (!extension_loaded('redis')) throw new BadFunctionCallException('Redis扩展不支持');
-    }
-
-    /**
-     * @param array $options
-     * @return mixed
-     */
-    public static function getInstance($options = [])
-    {
-        if ($options === []) $options = config('wechat_mini_program');
-        if ($options === false || $options === []) throw new InvalidArgumentException('配置不存在');
-        if (!isset($options['app_id'])) throw new InvalidArgumentException('配置下没有找到app_id设置');
-        if (!isset($options['app_secret'])) throw new InvalidArgumentException('配置下没有找到app_secret设置');
-        //if (!isset($options['app_token'])) throw new InvalidArgumentException('配置下没有找到app_token设置');
-        if (!isset($options['app_redis_cache_db_number'])) throw new InvalidArgumentException('配置下没有找到app_redis_cache_db_number设置');
-        if (!isset($options['app_redis_cache_key_prefix'])) throw new InvalidArgumentException('配置下没有找到app_redis_cache_key_prefix设置');
-        if (!isset($options['app_qrcode_cache_type'])) throw new InvalidArgumentException('配置下没有找到app_qrcode_cache_type设置');
-        if (!in_array($options['app_qrcode_cache_type'], ['oss', 'local'])) throw new InvalidArgumentException('配置下app_qrcode_cache_type参数无效仅支持：oss或local');
-        if ($options['app_qrcode_cache_type'] == 'oss') {
-            if (!isset($options['app_qrcode_cache_oss_access_key_id'])) throw new InvalidArgumentException('配置下没有找到app_qrcode_cache_oss_access_key_id设置');
-            if (!isset($options['app_qrcode_cache_oss_access_key_secret'])) throw new InvalidArgumentException('配置下没有找到app_qrcode_cache_oss_access_key_secret设置');
-            if (!isset($options['app_qrcode_cache_oss_end_point'])) throw new InvalidArgumentException('配置下没有找到app_qrcode_cache_oss_end_point设置');
-            if (!isset($options['app_qrcode_cache_oss_bucket'])) throw new InvalidArgumentException('配置下没有找到app_qrcode_cache_oss_bucket设置');
-        }
-        if (!is_dir($options['app_qrcode_cache_real_dir_path'])) throw new InvalidArgumentException('配置下app_qrcode_cache_real_dir_path路径无效');
-        if (!isset($options['app_qrcode_cache_relative_dir_path'])) throw new InvalidArgumentException('配置下app_qrcode_cache_relative_dir_path路径无效');
-        if (!isset($options['app_qrcode_request_url_prefix'])) throw new InvalidArgumentException('配置下没有找到app_qrcode_request_url_prefix设置');
-        $hash = md5(json_encode($options));
-        if (!isset(self::$instance[$hash])) {
-            self::$instance[$hash] = new self($options);
-        }
-        return self::$instance[$hash];
-    }
+    use CommonTrait;
 
     /**
      * 组合模板并添加至帐号下的个人模板库
@@ -240,7 +197,7 @@ class SubscribeMessage
      * @throws MiniProgramException
      * @document https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/template-message/templateMessage.send.html
      */
-    public function send(string $touser,string $template_id,array $data,array $extra_params=[])
+    public function send(string $touser, string $template_id, array $data, array $extra_params = [])
     {
         /**
          * 获取access_token
@@ -252,18 +209,18 @@ class SubscribeMessage
             'data' => $data
         ];
 
-        if (isset($extra_params['page']))$data['page'] = $extra_params['page'];
-        if (isset($extra_params['miniprogramState'])){
-            if (!in_array($extra_params['miniprogramState'],['developer','trial','formal'])) {
+        if (isset($extra_params['page'])) $data['page'] = $extra_params['page'];
+        if (isset($extra_params['miniprogramState'])) {
+            if (!in_array($extra_params['miniprogramState'], ['developer', 'trial', 'formal'])) {
                 throw new InvalidArgumentException('$extra_params["miniprogramState"]参数不合法，该参数允许的合法值为（developer、trial、formal），当前传入："' . $extra_params["miniprogramState"] . '"');
-            }else{
+            } else {
                 $data['miniprogramState'] = $extra_params['miniprogramState'];
             }
         }
-        if (isset($extra_params['lang'])){
-            if (!in_array($extra_params['lang'],['zh_CN','en_US','zh_HK','zh_TW'])) {
+        if (isset($extra_params['lang'])) {
+            if (!in_array($extra_params['lang'], ['zh_CN', 'en_US', 'zh_HK', 'zh_TW'])) {
                 throw new InvalidArgumentException('$extra_params["lang"]参数不合法，该参数允许的合法值为（zh_CN、en_US、zh_HK、zh_TW），当前传入："' . $extra_params["lang"] . '"');
-            }else{
+            } else {
                 $data['lang'] = $extra_params['lang'];
             }
         }
@@ -276,12 +233,12 @@ class SubscribeMessage
             ],
             2000,
             [
-                '0'=>'成功',
-                '40003'=>'touser字段openid为空或者不正确',
-                '40037'=>'订阅模板id为空不正确',
-                '43101'=>'用户拒绝接受消息，如果用户之前曾经订阅过，则表示用户取消了订阅关系',
-                '47003'=>'模板参数不准确，可能为空或者不满足规则，errmsg会提示具体是哪个字段出错',
-                '41030'=>'page路径不正确，需要保证在现网版本小程序中存在，与app.json保持一致'
+                '0' => '成功',
+                '40003' => 'touser字段openid为空或者不正确',
+                '40037' => '订阅模板id为空不正确',
+                '43101' => '用户拒绝接受消息，如果用户之前曾经订阅过，则表示用户取消了订阅关系',
+                '47003' => '模板参数不准确，可能为空或者不满足规则，errmsg会提示具体是哪个字段出错',
+                '41030' => 'page路径不正确，需要保证在现网版本小程序中存在，与app.json保持一致'
             ]
         );
     }
