@@ -143,21 +143,20 @@ class CustomerServiceMessage
 
     /**
      * 下发客服当前输入状态给用户
-     * @param $type
-     * @param $begin_date
-     * @param $end_date
+     * @param $touser
+     * @param bool $status
      * @return array
      * @throws MiniProgramException
      * @document https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/customer-message/customerServiceMessage.setTyping.html
      */
-    public function setTyping($open_id, bool $status = true)
+    public function setTyping($touser, bool $status = true)
     {
         /**
          * 获取access_token
          */
         $access_token = Auth::getInstance($this->options)->getAccessToken();
         $data = [
-            'touser' => $open_id,
+            'touser' => $touser,
             'command' => ($status) ? 'Typing' : 'CancelTyping'
         ];
         return Request::post(
