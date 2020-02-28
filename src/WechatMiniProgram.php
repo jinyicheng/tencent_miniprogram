@@ -2,13 +2,12 @@
 
 namespace jinyicheng\tencent_miniprogram;
 
-use BadFunctionCallException;
-use Exception;
-use InvalidArgumentException;
 use jinyicheng\redis\Redis;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\Analysis;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\Auth;
+use jinyicheng\tencent_miniprogram\wechat_mini_program\CommonTrait;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\CustomerServiceMessage;
+use jinyicheng\tencent_miniprogram\wechat_mini_program\Search;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\TemplateMessage;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\UniformMessage;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\PluginManager;
@@ -16,11 +15,10 @@ use jinyicheng\tencent_miniprogram\wechat_mini_program\ServiceMarket;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\Soter;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\SubscribeMessage;
 use OSS\OssClient;
-use UnexpectedValueException;
 
 class WechatMiniProgram
 {
-
+    use CommonTrait;
 
 
     /**
@@ -110,7 +108,11 @@ class WechatMiniProgram
 
     /**
      * 小程序搜索
+     * @return Search
      */
+    public function search(){
+        return Search::getInstance($this->options);
+    }
 
     /**
      * 服务市场
