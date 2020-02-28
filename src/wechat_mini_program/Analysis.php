@@ -2,7 +2,10 @@
 
 namespace jinyicheng\tencent_miniprogram\wechat_mini_program;
 
+use BadFunctionCallException;
+use InvalidArgumentException;
 use jinyicheng\redis\Redis;
+use jinyicheng\tencent_miniprogram\Datetime;
 use jinyicheng\tencent_miniprogram\Request;
 use jinyicheng\tencent_miniprogram\MiniProgramException;
 

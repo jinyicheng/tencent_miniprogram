@@ -2,6 +2,8 @@
 
 namespace jinyicheng\tencent_miniprogram\wechat_mini_program;
 
+use BadFunctionCallException;
+use InvalidArgumentException;
 use jinyicheng\tencent_miniprogram\Request;
 use jinyicheng\tencent_miniprogram\Response;
 use jinyicheng\tencent_miniprogram\MiniProgramException;
