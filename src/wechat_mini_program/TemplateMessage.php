@@ -61,7 +61,7 @@ class TemplateMessage
         return Request::post(
             'https://api.weixin.qq.com/cgi-bin/wxopen/template/del?access_token=' . $access_token,
             json_encode([
-                'template_id' => $id
+                'template_id' => $template_id
             ]),
             [
                 'Content-Type:application/json;charset=utf-8'
