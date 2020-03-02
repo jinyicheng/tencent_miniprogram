@@ -7,6 +7,7 @@ use jinyicheng\tencent_miniprogram\wechat_mini_program\Analysis;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\Auth;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\CommonTrait;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\CustomerServiceMessage;
+use jinyicheng\tencent_miniprogram\wechat_mini_program\Operation;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\Search;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\TemplateMessage;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\UniformMessage;
@@ -104,7 +105,11 @@ class WechatMiniProgram
 
     /**
      * 运维中心
+     * @return Operation
      */
+    public function operation(){
+        return Operation::getInstance($this->options);
+    }
 
     /**
      * 小程序搜索
