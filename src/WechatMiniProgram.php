@@ -21,6 +21,13 @@ class WechatMiniProgram
 {
     use CommonTrait;
 
+    /**
+     * 解密
+     * @param $session_key
+     * @param $encrypted_data
+     * @param $iv
+     * @return array
+     */
     public static function decrypt($session_key, $encrypted_data, $iv)
     {
         if (strlen($session_key) != 24) return [
