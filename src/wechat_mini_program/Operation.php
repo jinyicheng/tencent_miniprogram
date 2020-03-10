@@ -7,7 +7,7 @@ use jinyicheng\tencent_miniprogram\MiniProgramException;
 use jinyicheng\tencent_miniprogram\Request;
 
 /**
- * 生物认证
+ * 运维中心
  * Class Operation
  * @package jinyicheng\tencent_miniprogram\wechat_mini_program
  */
@@ -51,13 +51,17 @@ class Operation
             }
         }
 
-        return Request::post(
+        return Request::get(
             'https://api.weixin.qq.com/wxaapi/userlog/userlog_search',
             $data,
+            [],
+            2000,
             [
-                'Content-Type:application/json;charset=utf-8'
-            ],
-            2000
+                '-1'=>'系统失败',
+                '200002'=>'参数错误，date、begintime、endtime必填。date只能是最近三天的日期，endtime必须大于begintime',
+                '200010'=>'操作过于频繁，目前限制每分钟50次',
+                '200007'=>'无权限'
+            ]
         );
     }
 }

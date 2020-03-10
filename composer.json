@@ -1,32 +1,33 @@
 {
-  "name": "jinyicheng/tencent_miniprogram",
-  "description": "腾讯小程序",
-  "keywords": [
-    "tencent",
-    "mini program",
-    "thinkphp5",
-    "thinkphp6",
-    "laravel6"
-  ],
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "jinyicheng",
-      "email": "234067496@qq.com"
+    "name": "jinyicheng/tencent_miniprogram",
+    "description": "腾讯小程序",
+    "keywords": [
+        "tencent",
+        "mini program",
+        "thinkphp5",
+        "thinkphp6",
+        "laravel6"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "jinyicheng",
+            "email": "234067496@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "ext-redis": "*",
+        "aliyuncs/oss-sdk-php": "^2.3",
+        "jinyicheng/redis": "^2.0",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-fileinfo": "*",
+        "ext-openssl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "jinyicheng\\tencent_miniprogram\\": "src/"
+        }
     }
-  ],
-  "require": {
-    "php": ">=7.1.0",
-    "ext-redis": "*",
-    "aliyuncs/oss-sdk-php": "^2.3",
-    "jinyicheng/redis": "^2.0",
-    "ext-curl": "*",
-    "ext-json": "*",
-    "ext-fileinfo": "*"
-  },
-  "autoload": {
-    "psr-4": {
-      "jinyicheng\\tencent_miniprogram\\": "src/"
-    }
-  }
 }

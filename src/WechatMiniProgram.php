@@ -8,19 +8,47 @@ use jinyicheng\tencent_miniprogram\wechat_mini_program\Auth;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\CommonTrait;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\CustomerServiceMessage;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\Operation;
-use jinyicheng\tencent_miniprogram\wechat_mini_program\Search;
-use jinyicheng\tencent_miniprogram\wechat_mini_program\TemplateMessage;
-use jinyicheng\tencent_miniprogram\wechat_mini_program\UniformMessage;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\PluginManager;
+use jinyicheng\tencent_miniprogram\wechat_mini_program\Search;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\ServiceMarket;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\Soter;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\SubscribeMessage;
+use jinyicheng\tencent_miniprogram\wechat_mini_program\TemplateMessage;
+use jinyicheng\tencent_miniprogram\wechat_mini_program\UniformMessage;
 use OSS\OssClient;
 
 class WechatMiniProgram
 {
     use CommonTrait;
 
+    public static function decrypt($session_key, $encrypted_data, $iv)
+    {
+        if (strlen($session_key) != 24) return [
+            'status' => false,
+            'message' => 'session_key长度错误',
+            'data' => null,
+            'code' => -41001
+        ];
+        if (strlen($iv) != 24) return [
+            'status' => false,
+            'message' => 'iv长度错误',
+            'data' => null,
+            'code' => -41002
+        ];
+        $result = openssl_decrypt(base64_decode($encrypted_data), "AES-128-CBC", base64_decode($session_key), 1, base64_decode($iv));
+        $dataObj = json_decode($result, true);
+        return (is_array($dataObj) && !empty($dataObj)) ? [
+            'status' => false,
+            'message' => '解密失败，解密结果为空',
+            'data' => null,
+            'code' => -41003
+        ] : [
+            'status' => true,
+            'message' => '解密成功',
+            'data' => $dataObj,
+            'code' => 0
+        ];
+    }
 
     /**
      * 登录/用户信息/接口调用凭证
@@ -35,7 +63,8 @@ class WechatMiniProgram
      * 数据分析
      * @return Analysis
      */
-    public function analysis(){
+    public function analysis()
+    {
         return Analysis::getInstance($this->options);
     }
 
@@ -43,7 +72,8 @@ class WechatMiniProgram
      * 客服消息
      * @return CustomerServiceMessage
      */
-    public function customerServiceMessage(){
+    public function customerServiceMessage()
+    {
         return CustomerServiceMessage::getInstance($this->options);
     }
 
@@ -51,7 +81,8 @@ class WechatMiniProgram
      * 模板消息
      * @return TemplateMessage
      */
-    public function templateMessage(){
+    public function templateMessage()
+    {
         return TemplateMessage::getInstance($this->options);
     }
 
@@ -59,7 +90,8 @@ class WechatMiniProgram
      * 统一服务消息
      * @return UniformMessage
      */
-    public function uniformMessage(){
+    public function uniformMessage()
+    {
         return UniformMessage::getInstance($this->options);
     }
 
@@ -67,7 +99,8 @@ class WechatMiniProgram
      * 插件管理
      * @return PluginManager
      */
-    public function pluginManager(){
+    public function pluginManager()
+    {
         return PluginManager::getInstance($this->options);
     }
 
@@ -107,7 +140,8 @@ class WechatMiniProgram
      * 运维中心
      * @return Operation
      */
-    public function operation(){
+    public function operation()
+    {
         return Operation::getInstance($this->options);
     }
 
@@ -115,7 +149,8 @@ class WechatMiniProgram
      * 小程序搜索
      * @return Search
      */
-    public function search(){
+    public function search()
+    {
         return Search::getInstance($this->options);
     }
 
@@ -123,7 +158,8 @@ class WechatMiniProgram
      * 服务市场
      * @return ServiceMarket
      */
-    public function serviceMarket(){
+    public function serviceMarket()
+    {
         return ServiceMarket::getInstance($this->options);
     }
 
@@ -135,7 +171,8 @@ class WechatMiniProgram
      * 生物认证
      * @return Soter
      */
-    public function soter(){
+    public function soter()
+    {
         return Soter::getInstance($this->options);
     }
 
@@ -143,11 +180,12 @@ class WechatMiniProgram
      * 订阅消息
      * @return SubscribeMessage
      */
-    public function subscribeMessage(){
+    public function subscribeMessage()
+    {
         return SubscribeMessage::getInstance($this->options);
     }
 
-    
+
 
 //    /**
 //     * @param $open_id
@@ -185,7 +223,6 @@ class WechatMiniProgram
 //    }
 
 
-    
     /**
      * 客服消息
      */
