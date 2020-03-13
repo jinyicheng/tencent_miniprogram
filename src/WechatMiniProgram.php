@@ -45,15 +45,15 @@ class WechatMiniProgram
         $result = openssl_decrypt(base64_decode($encrypted_data), "AES-128-CBC", base64_decode($session_key), 1, base64_decode($iv));
         $dataObj = json_decode($result, true);
         return (is_array($dataObj) && !empty($dataObj)) ? [
-            'status' => false,
-            'message' => '解密失败，解密结果为空',
-            'data' => null,
-            'code' => -41003
-        ] : [
             'status' => true,
             'message' => '解密成功',
             'data' => $dataObj,
             'code' => 0
+        ] : [
+            'status' => false,
+            'message' => '解密失败，解密结果为空',
+            'data' => null,
+            'code' => -41003
         ];
     }
 

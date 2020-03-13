@@ -19,7 +19,7 @@ class UpdatableMessage
      * 修改被分享的动态消息
      * @param string $activity_id
      * @param int $target_state
-     * @param array $template_info
+     * @param array $parameter_list
      * @return array
      * @throws MiniProgramException
      * @document https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/updatable-message/updatableMessage.setUpdatableMsg.html
@@ -75,7 +75,6 @@ class UpdatableMessage
 
     /**
      * 创建被分享动态消息的 activity_id
-     * @param $media_id
      * @return array
      * @throws MiniProgramException
      * @document https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/updatable-message/updatableMessage.createActivityId.html
