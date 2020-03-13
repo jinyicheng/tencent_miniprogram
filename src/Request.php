@@ -66,7 +66,7 @@ class Request
      * @param $httpCode
      * @param $response
      * @param $errExplain
-     * @return array
+     * @return mixed
      * @throws MiniProgramException
      */
     private static function formatResponse($httpCode, $response, $errExplain)
@@ -77,28 +77,14 @@ class Request
             $return_data = json_decode($response, true);
             $requestResult = ($return_data) ? $return_data : $response;
             if (isset($requestResult['errcode'])) {
-                $result = [
-                    'message' => $requestResult['errmsg'] . (isset($errExplain[$requestResult['errcode']])) ? $errExplain[$requestResult['errcode']] : '',
-                    'code' => $requestResult['errcode']
-                ];
                 if ($requestResult['errcode'] == 0) {
-                    $result['status'] = true;
-                    unset($requestResult['errcode']);
-                    unset($requestResult['errmsg']);
-                    $result['data'] = $requestResult;
+                    return $requestResult;
                 } else {
-                    $result['status'] = false;
-                    $result['data'] = null;
+                    throw new MiniProgramException($requestResult['errmsg'] . (isset($errExplain[$requestResult['errcode']])) ? $errExplain[$requestResult['errcode']] : '', $requestResult['errcode']);
                 }
             } else {
-                $result = [
-                    'status' => true,
-                    'message' => '操作成功',
-                    'data' => $requestResult,
-                    'code' => 0
-                ];
+                return $requestResult;
             }
-            return $result;
         }
     }
 }

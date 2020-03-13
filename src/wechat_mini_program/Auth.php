@@ -127,13 +127,9 @@ class Auth
                     '40013' => '不合法的 AppID，请开发者检查 AppID 的正确性，避免异常字符，注意大小写'
                 ]
             );
-            if ($response['status']) {
-                //在redis中保存access_token
-                $redis->set($access_token_key, $response['data']['access_token'], $response['data']['expires_in']);
-                return $response['data']['access_token'];
-            } else {
-                throw new MiniProgramException($response['message'], $response['code']);
-            }
+            //在redis中保存access_token
+            $redis->set($access_token_key, $response['access_token'], $response['expires_in']);
+            return $response['access_token'];
         }
     }
 }

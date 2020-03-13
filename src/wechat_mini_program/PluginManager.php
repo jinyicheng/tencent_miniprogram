@@ -201,7 +201,7 @@ class PluginManager
     /**
      * 修改插件使用申请的状态（供插件开发者调用）
      * @param string $action
-     * @param array $extra_params
+     * @param string $plugin_appid
      * @return array
      * @throws MiniProgramException
      * @document https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/plugin-management/pluginManager.unbindPlugin.html
