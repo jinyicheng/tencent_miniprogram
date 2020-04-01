@@ -2,7 +2,6 @@
 
 namespace jinyicheng\tencent_miniprogram;
 
-use jinyicheng\redis\Redis;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\Analysis;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\Auth;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\CommonTrait;
@@ -16,7 +15,6 @@ use jinyicheng\tencent_miniprogram\wechat_mini_program\SubscribeMessage;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\TemplateMessage;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\UniformMessage;
 use jinyicheng\tencent_miniprogram\wechat_mini_program\Wxacode;
-use OSS\OssClient;
 
 class WechatMiniProgram
 {
@@ -32,18 +30,23 @@ class WechatMiniProgram
      * @return array
      * @throws MiniProgramException
      */
-    public static function decrypt($session_key, $encrypted_data, $iv, $raw_data, $signature)
+    public function decrypt($session_key, $encrypted_data, $iv, $raw_data = null, $signature = null)
     {
-        if ($signature == sha1($raw_data . $session_key)) {
-            $result = openssl_decrypt(base64_decode($encrypted_data), "AES-128-CBC", base64_decode($session_key), 1, base64_decode($iv));
-            $dataObj = json_decode($result, true);
-            if (is_array($dataObj) && !empty($dataObj)) {
+        if (!is_null($raw_data) && !is_null($signature)) {
+            if ($signature != sha1($raw_data . $session_key)) {
+                throw new MiniProgramException('解密失败，数据非法', -41004);
+            }
+        }
+        $result = openssl_decrypt(base64_decode($encrypted_data), "AES-128-CBC", base64_decode($session_key), 1, base64_decode($iv));
+        $dataObj = json_decode($result, true);
+        if (is_array($dataObj) && !empty($dataObj)) {
+            if ($this->options['app_id'] == $dataObj['watermark']['appid']) {
                 return $dataObj;
             } else {
-                throw new MiniProgramException('解密失败，解密结果为空', -41003);
+                throw new MiniProgramException('解密失败，数据非法', -41004);
             }
         } else {
-            throw new MiniProgramException('解密失败，数据非法', -41004);
+            throw new MiniProgramException('解密失败，解密结果为空', -41003);
         }
     }
 
@@ -109,7 +112,8 @@ class WechatMiniProgram
      * 小程序码
      * @return Wxacode
      */
-    public function wxacode(){
+    public function wxacode()
+    {
         return Wxacode::getInstance($this->options);
     }
 
