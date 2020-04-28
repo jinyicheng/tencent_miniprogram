@@ -80,7 +80,7 @@ class Request
                 if ($requestResult['errcode'] == 0) {
                     return $requestResult;
                 } else {
-                    throw new MiniProgramException($requestResult['errmsg'] . (isset($errExplain[$requestResult['errcode']])) ? $errExplain[$requestResult['errcode']] : '', $requestResult['errcode']);
+                    throw new MiniProgramException($requestResult['errmsg'] . ((isset($errExplain[$requestResult['errcode']])) ? $errExplain[$requestResult['errcode']] : ''), $requestResult['errcode']);
                 }
             } else {
                 return $requestResult;
