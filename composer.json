@@ -29,5 +29,12 @@
         "psr-4": {
             "jinyicheng\\tencent_miniprogram\\": "src/"
         }
+    },
+    "extra": {
+        "think": {
+            "config": {
+                "wechat_mini_program": "src/config.php"
+            }
+        }
     }
 }
